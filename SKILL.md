@@ -93,10 +93,14 @@ tone 影响：
 
 ### Step 6: 加载工作流
 
-- 知识模式 → 读取 `knowledge-mode.md`
-- 项目模式 → 读取 `project-mode.md`
-- 源码阅读模式 → 读取 `codebase-mode.md`
-- 可视化辅助 → 参考 `visual-aids.md`
+**重要：你必须使用 Read 工具读取本 skill 目录下的对应文件，严格遵循其中的详细指令。** 所有子文件与 SKILL.md 位于同一目录（`~/.claude/skills/ai-tutor/`）。
+
+- 知识模式 → Read `knowledge-mode.md`，按其工作流执行
+- 项目模式 → Read `project-mode.md`，按其工作流执行
+- 源码阅读模式 → Read `codebase-mode.md`，按其工作流执行
+- 生成可视化内容时 → Read `visual-aids.md` 获取模板和指南
+
+不要凭记忆执行工作流，每次触发都必须重新读取对应文件。
 
 ## 文件约定
 
