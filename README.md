@@ -37,7 +37,7 @@
 ## 安装
 
 ```bash
-git clone https://github.com/<your-username>/ai-tutor-skill.git ~/.claude/skills/ai-tutor
+git clone https://github.com/Chih-hengChen/ai-tutor.git ~/.claude/skills/ai-tutor
 ```
 
 或手动创建目录后放入以下文件：
