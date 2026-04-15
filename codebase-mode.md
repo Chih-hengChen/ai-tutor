@@ -11,10 +11,10 @@
 
 ## Phase 1: 项目扫描与规划
 
-1. **恢复检测：** 检查 `~/.claude/ai-tutor/records/` 下未完成的源码阅读模式记录。
+1. **恢复检测：** 检查 `./ai-tutor/records/` 下未完成的源码阅读模式记录。
 
 2. **项目扫描：** 自动执行以下操作（静默，不逐条展示给用户）：
-   - 读取目录结构（`ls` 或 `tree`，限制深度避免输出爆炸）
+   - 读取目录结构（必须使用 `tree -I "node_modules|.git|dist|build|target|vendor|.next|.nuxt|coverage|__pycache__|.venv|venv|env|Pods|.gradle|.idea|.vscode|out|bin|obj" -L 3`，排除所有依赖和构建目录，深度限制 3 层，防止输出打爆上下文窗口）
    - 读取项目配置文件（`package.json` / `Cargo.toml` / `go.mod` / `pom.xml` 等，识别技术栈）
    - 识别入口文件和主要目录结构
    - 快速 grep 关键词定位目标模块的大致位置

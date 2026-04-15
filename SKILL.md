@@ -14,10 +14,10 @@ disable-model-invocation: false
 
 ### Step 1: 加载配置
 
-读取 `~/.claude/ai-tutor/config.yaml`。如果文件不存在，使用默认值。
+读取 `./ai-tutor/config.yaml`。如果文件不存在，**必须静默创建该文件**并写入以下默认配置模板（包含注释，方便用户后续自行修改），然后使用默认值继续：
 
 ```yaml
-# ~/.claude/ai-tutor/config.yaml
+# ./ai-tutor/config.yaml
 strictness: normal         # hard | normal | lenient — hard=更少提示更严格，lenient=更多提示更宽松
 visual_tool: mermaid       # mermaid | ascii — 默认可视化工具
 tone: encouraging          # strict | encouraging — strict=严谨教授，encouraging=鼓励学长
@@ -40,13 +40,13 @@ tone 影响：
 在进入模式识别前，先检查是否为特殊指令：
 
 **`/ai-tutor status` — 学习面板**
-- 读取 `~/.claude/ai-tutor/records/` 下所有记录
+- 读取 `./ai-tutor/records/` 下所有记录
 - 生成 ASCII 进度面板（模板见 `visual-aids.md`）
 - 展示后结束，不进入教学流程
 
 **`/ai-tutor reset [主题]` — 重置**
-- 删除 `~/.claude/ai-tutor/records/[主题slug].md`
-- 删除 `~/.claude/ai-tutor/summaries/[主题slug]_*` 相关归档
+- 删除 `./ai-tutor/records/[主题slug].md`
+- 删除 `./ai-tutor/summaries/[主题slug]_*` 相关归档
 - 确认后输出"已清除 [主题] 的所有学习记录"
 
 **`/ai-tutor reset --all` — 全部重置**
@@ -61,7 +61,7 @@ tone 影响：
 
 ### Step 3: 恢复检测
 
-检查 `~/.claude/ai-tutor/records/` 下是否有未完成的记录文件。
+检查 `./ai-tutor/records/` 下是否有未完成的记录文件。
 - 有 → 展示进度，询问"继续还是开始新的？"
 - 无 → 进入 Step 4。
 
@@ -76,7 +76,8 @@ tone 影响：
    - mastery_level 3（复习过 2 次）→ 14 天后复习
 3. 如果有到期或过期的节点：
    - 展示复习提醒面板（模板见 `visual-aids.md`）
-   - 出 1 道快速复习题（每个到期节点 1 道）
+   - **复习上限：如果到期节点超过 3 个，只挑选最早到期的 3 个进行复习，其余自动顺延至下次启动。** 不要让用户被复习题淹没。
+	   - 出 1 道快速复习题（每个参与复习的节点 1 道）
    - 复习通过 → mastery_level +1，更新 last_tested_date
    - 复习未通过 → mastery_level 回到 1，更新 last_tested_date
 4. 复习完成后进入新内容
@@ -93,18 +94,18 @@ tone 影响：
 
 ### Step 6: 加载工作流
 
-**重要：你必须使用 Read 工具读取本 skill 目录下的对应文件，严格遵循其中的详细指令。** 所有子文件与 SKILL.md 位于同一目录（`~/.claude/skills/ai-tutor/`）。
+**重要：你必须使用 Read 工具读取本 skill 目录下的对应文件，严格遵循其中的详细指令。** 注意：大模型的当前工作目录（CWD）通常是用户的项目目录，而非 skill 所在目录。因此必须使用绝对路径读取：
 
-- 知识模式 → Read `knowledge-mode.md`，按其工作流执行
-- 项目模式 → Read `project-mode.md`，按其工作流执行
-- 源码阅读模式 → Read `codebase-mode.md`，按其工作流执行
-- 生成可视化内容时 → Read `visual-aids.md` 获取模板和指南
+- 知识模式 → Read `~/.claude/skills/ai-tutor/knowledge-mode.md`，按其工作流执行
+- 项目模式 → Read `~/.claude/skills/ai-tutor/project-mode.md`，按其工作流执行
+- 源码阅读模式 → Read `~/.claude/skills/ai-tutor/codebase-mode.md`，按其工作流执行
+- 生成可视化内容时 → Read `~/.claude/skills/ai-tutor/visual-aids.md` 获取模板和指南
 
 不要凭记忆执行工作流，每次触发都必须重新读取对应文件。
 
 ## 文件约定
 
-所有数据存放在 `~/.claude/ai-tutor/`：
+所有数据存放在 `./ai-tutor/`：
 - `config.yaml` — 用户配置
 - `records/[slug].md` — 进度记录
 - `summaries/[slug]_[阶段slug].md` — 归档总结
@@ -139,5 +140,5 @@ slug 规则：英文/拼音小写，连字符分隔。
 3. **输出克制：** 理论精简，重实践和总结。
 4. **渐进提示：** 先给线索，根据 strictness 配置决定提示时机。
 5. **单点聚焦：** 每次只讲一个知识点/功能节点。
-6. **项目模式不给完整代码：** 只给骨架和提示。
+6. **项目模式默认不给完整代码：** 只给骨架和提示。但当用户反复卡住时，允许通过"逃生舱机制"给出参考实现并逐行解释（详见 project-mode.md）。
 7. **调试优先：** 用户代码出错时引导读报错自己定位。
