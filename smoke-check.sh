@@ -14,7 +14,7 @@ echo "Skill dir: $SKILL_DIR"
 echo ""
 
 echo "--- 1. Required files exist ---"
-for f in SKILL.md README.md knowledge-mode.md project-mode.md codebase-mode.md visual-aids.md .editorconfig .gitattributes; do
+for f in SKILL.md README.md knowledge-mode.md project-mode.md codebase-mode.md deep-dive-mode.md visual-aids.md .editorconfig .gitattributes; do
   if [ -f "$SKILL_DIR/$f" ]; then
     echo "  OK  $f"; ok
   else

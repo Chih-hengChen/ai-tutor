@@ -48,29 +48,30 @@
 
 ### 大型知识域（25+ 知识点，如 React 源码、V8 引擎）
 
-采用**分层聚焦策略**：
+**重要：如果主题属于系统级底层内容（框架源码、运行时引擎、编译器、操作系统内核等），应路由到深度讲解模式（`deep-dive-mode.md`），不要在知识模式下处理。** 知识模式适合"学会用"，深度模式适合"理解为什么这样设计"。
+
+如果主题不属于底层源码级，只是知识点数量多，则采用**分层聚焦策略**：
 
 1. **先出总览图**：用 Mermaid 或 ASCII 画出整体架构的高层次鸟瞰图，让用户先有全貌认知。
-2. **分区域划模块**：按子系统划分（如 React → Fiber | Reconciliation | Hooks | Scheduler | Event System）。
+2. **分区域划模块**：按子系统划分（如 React API → Hooks | Context | Suspense | Server Components）。
 3. **让用户选焦点**：展示鸟瞰图后，让用户选择想先深入哪个区域。
 4. **每个区域独立成大纲**：选定的区域内再按小型知识域的方式拆分。
 5. **跨区域引用**：涉及其他区域时简要提及并标注"这在 XX 模块会深入讲"。
 
-示例（React 源码）：
+示例（React API 学习，非源码级）：
 
 ```
-总览: React 架构鸟瞰（先展示架构图）
+总览: React API 体系鸟瞰（先展示架构图）
 
-区域A: Fiber 架构（用户选择先学这个）
-  A.1 Fiber 节点的数据结构
-  A.2 Fiber 树的构建过程
-  A.3 current 树与 workInProgress 树
-  A.4 Fiber 的副作用标记系统
+区域A: Hooks API（用户选择先学这个）
+  A.1 useState 和 useReducer
+  A.2 useEffect 和 useLayoutEffect
+  A.3 useMemo 和 useCallback
+  A.4 useRef 和 useImperativeHandle
 
-区域B: 调度机制（后续模块）
-区域C: Hooks 实现
-区域D: 协调算法(Reconciliation)
-区域E: 事件系统
+区域B: Context API（后续模块）
+区域C: Suspense 和并发特性
+区域D: Server Components
 ```
 
 ## Phase 1: 摸底与规划
