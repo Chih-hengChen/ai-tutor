@@ -133,7 +133,7 @@
 
 - 未通过 → 出全新同类题，绝不直接给答案。
 - 同一节点连续失败 3 次 → 拆分为更小子知识点。
-- 通过 → 更新记录为 `[已掌握]`，同时更新该节点的 `last_tested_date` 为今天，`mastery_level` 设为 1。追加学习日志。
+- 通过 → 更新记录 YAML frontmatter 中对应节点的 `status: mastered`、`last_tested: 今天`、`mastery_level: 1`。追加学习日志到 Markdown 正文。
 
 ## Phase 4: 阶段总结与知识沉淀
 

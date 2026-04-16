@@ -39,11 +39,12 @@
 
 ```bash
 git clone https://github.com/Chih-hengChen/ai-tutor.git ~/.claude/skills/ai-tutor
+# Windows PowerShell: git clone https://github.com/Chih-hengChen/ai-tutor.git "$env:USERPROFILE\.claude\skills\ai-tutor"
 ```
 
 或手动创建目录后放入以下文件：
 
-> **目录说明：** Skill 程序安装在 `~/.claude/skills/ai-tutor/`，学习记录和配置存放在**当前工作目录**下的 `ai-tutor/` 文件夹中。升级 skill 不影响学习进度，删除记录不影响 skill 本身。
+> **目录说明：** Skill 程序安装在本地的 skill 目录（Unix: `~/.claude/skills/ai-tutor/`，Windows: `%USERPROFILE%\.claude\skills\ai-tutor\`），学习记录和配置存放在**当前工作目录**下的 `ai-tutor/` 文件夹中。升级 skill 不影响学习进度，删除记录不影响 skill 本身。
 
 ```
 ai-tutor/
@@ -140,39 +141,17 @@ AI Tutor:
 
 ## 间隔复习机制
 
-基于艾宾浩斯遗忘曲线，自动在课前弹出复习题：
-
-| mastery_level | 复习间隔 |
-|---------------|---------|
-| 1（刚通过） | 3 天后 |
-| 2（复习 1 次） | 7 天后 |
-| 3（复习 2 次） | 14 天后 |
-
-复习通过 → level +1。复习未通过 → level 回到 1。
-
-**防雪崩：** 到期节点超过 3 个时只复习最早到期的 3 个，其余自动顺延至下次。
+基于艾宾浩斯遗忘曲线，自动在课前弹出复习题。复习间隔和防雪崩机制详见 SKILL.md Step 4。
 
 ## 全局配置
 
-编辑 `./ai-tutor/config.yaml`（首次运行自动创建）：
+首次运行时自动在 `./ai-tutor/config.yaml` 创建带注释的配置模板。可选配置项：
 
-```yaml
-# 严格等级
-# hard: 少提示、严格判定、不允许跳过
-# normal: 平衡模式（默认）
-# lenient: 多提示、宽松判定、允许跳过并标记待复习
-strictness: normal
+- `strictness`（严格等级）：hard / normal（默认） / lenient
+- `visual_tool`（可视化工具）：mermaid（默认） / ascii
+- `tone`（语气风格）：strict / encouraging（默认）
 
-# 默认可视化工具
-# mermaid: 生成 Mermaid 图表（推荐在 VS Code/Obsidian 中查看）
-# ascii: 生成 ASCII 图表（纯终端友好）
-visual_tool: mermaid
-
-# 语气风格
-# strict: 严谨教授，简短肯定，重点指错
-# encouraging: 鼓励学长，肯定进步，缓解挫败感
-tone: encouraging
-```
+各配置项的具体影响见 SKILL.md Step 1。
 
 ## 学习进度面板
 
@@ -234,10 +213,13 @@ ai-tutor/
 
 **按需加载：** 触发时只加载 SKILL.md，根据模式再读取对应子文件，不浪费上下文窗口。
 
+**单一事实源：** 所有规则、配置、记录格式的权威定义在 SKILL.md。本文件（README.md）仅为用户概览，如与 SKILL.md 有出入，以 SKILL.md 为准。
+
 ## 要求
 
 - [Claude Code](https://docs.anthropic.com/en/docs/claude-code) CLI 或桌面端
 - 无额外依赖
+- 终端编码需支持 UTF-8（Windows PowerShell 需运行 `chcp 65001` 或在系统设置中启用 UTF-8 支持）
 
 ## License
 

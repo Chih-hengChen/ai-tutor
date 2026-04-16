@@ -94,12 +94,12 @@ tone 影响：
 
 ### Step 6: 加载工作流
 
-**重要：你必须使用 Read 工具读取本 skill 目录下的对应文件，严格遵循其中的详细指令。** 注意：大模型的当前工作目录（CWD）通常是用户的项目目录，而非 skill 所在目录。因此必须使用绝对路径读取：
+**重要：你必须使用 Read 工具读取本 skill 目录下的对应文件，严格遵循其中的详细指令。** 本文件（SKILL.md）已成功加载，说明 skill 目录路径已知。子文件与 SKILL.md 位于同一目录，使用加载本文件时的目录路径拼接以下文件名：
 
-- 知识模式 → Read `~/.claude/skills/ai-tutor/knowledge-mode.md`，按其工作流执行
-- 项目模式 → Read `~/.claude/skills/ai-tutor/project-mode.md`，按其工作流执行
-- 源码阅读模式 → Read `~/.claude/skills/ai-tutor/codebase-mode.md`，按其工作流执行
-- 生成可视化内容时 → Read `~/.claude/skills/ai-tutor/visual-aids.md` 获取模板和指南
+- 知识模式 → Read `knowledge-mode.md`，按其工作流执行
+- 项目模式 → Read `project-mode.md`，按其工作流执行
+- 源码阅读模式 → Read `codebase-mode.md`，按其工作流执行
+- 生成可视化内容时 → Read `visual-aids.md` 获取模板和指南
 
 不要凭记忆执行工作流，每次触发都必须重新读取对应文件。
 
@@ -114,24 +114,38 @@ slug 规则：英文/拼音小写，连字符分隔。
 
 ### 记录文件格式
 
-记录文件开头必须标明模式。每个节点增加 `last_tested_date` 和 `mastery_level` 字段：
+记录文件使用 YAML frontmatter 存储机器可读状态，Markdown 正文保留人读内容。frontmatter 是唯一的状态源，所有状态读写都针对 frontmatter 操作。
 
 ```markdown
-# [名称] 学习记录
-模式: 知识模式 | 项目模式 | 源码阅读模式
-开始时间: YYYY-MM-DD
+---
+mode: knowledge | project | codebase
+start_date: YYYY-MM-DD
+nodes:
+  "1.1":
+    name: 节点名
+    module: 模块名
+    status: pending | learning | mastered
+    attempts: 0
+    last_tested: null
+    mastery_level: 0
+    failure_type: null
+---
 
-## [模块/里程碑]
-- [x] x.x [节点名] [已掌握] — 1次通过 | last: 2026-04-14 | level: 1
-- [ ] x.x [节点名] [学习中] — 失败1次, 类型: 概念性
-- [ ] x.x [节点名] [未开始]
+# [名称] 学习记录
 
 ## 学习日志
 | 日期 | 节点 | 结果 | 备注 |
 |------|------|------|------|
 ```
 
-节点通过时自动追加 `| last: YYYY-MM-DD | level: 1`。复习通过时 level 递增。
+**字段说明：**
+- `status`: `pending`（未开始）、`learning`（学习中）、`mastered`（已掌握）
+- `attempts`: 尝试次数
+- `last_tested`: 最后通过/复习日期（YYYY-MM-DD），未通过为 null
+- `mastery_level`: 掌握等级（0=未通过，1=刚通过，2=复习1次，3=复习2次），用于间隔复习
+- `failure_type`: 最近失败类型（conceptual | detail | close），无失败为 null
+
+节点通过时：`status: mastered`、`last_tested: 今天`、`mastery_level: 1`。复习通过时 `mastery_level` 递增，未通过回到 1。
 
 ## 共享约束
 

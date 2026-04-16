@@ -14,7 +14,7 @@
 1. **恢复检测：** 检查 `./ai-tutor/records/` 下未完成的源码阅读模式记录。
 
 2. **项目扫描：** 自动执行以下操作（静默，不逐条展示给用户）：
-   - 读取目录结构（必须使用 `tree -I "node_modules|.git|dist|build|target|vendor|.next|.nuxt|coverage|__pycache__|.venv|venv|env|Pods|.gradle|.idea|.vscode|out|bin|obj" -L 3`，排除所有依赖和构建目录，深度限制 3 层，防止输出打爆上下文窗口）
+   - 读取目录结构（排除 node_modules、.git、dist、build、target、vendor、.next、.nuxt、coverage、__pycache__、.venv、venv、env、Pods、.gradle、.idea、.vscode、out、bin、obj 等依赖和构建目录，深度限制 3 层，防止输出打爆上下文窗口。按环境选择可用方式：① 优先使用 Glob 工具扫描（跨平台）；② 其次 `find . -maxdepth 3 -not -path '*/node_modules/*' ...`（Unix/WSL/Git Bash）；③ 最后 `Get-ChildItem -Depth 3`（Windows PowerShell））
    - 读取项目配置文件（`package.json` / `Cargo.toml` / `go.mod` / `pom.xml` 等，识别技术栈）
    - 识别入口文件和主要目录结构
    - 快速 grep 关键词定位目标模块的大致位置
@@ -41,15 +41,23 @@
 ### 源码阅读模式记录模板
 
 ```markdown
-# [项目名] 源码阅读记录
-模式: 源码阅读模式
-技术栈: [识别出的技术栈]
-项目路径: [当前工作目录]
-开始时间: YYYY-MM-DD
+---
+mode: codebase
+start_date: YYYY-MM-DD
+tech_stack: [识别出的技术栈]
+project_path: [当前工作目录]
+nodes:
+  "1.1":
+    name: [阅读节点]
+    module: [模块名]
+    status: pending
+    attempts: 0
+    last_tested: null
+    mastery_level: 0
+    files: xxx.ts, yyy.ts
+---
 
-## [模块名]
-- [ ] x.x [阅读节点] [未开始] — 涉及文件: xxx.ts, yyy.ts
-- [x] x.x [阅读节点] [已掌握] — 1次通过
+# [项目名] 源码阅读记录
 
 ## 学习日志
 | 日期 | 节点 | 结果 | 备注 |
