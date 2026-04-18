@@ -38,9 +38,16 @@
 
 ## 安装
 
+### MacOs/Unix
+
 ```bash
 git clone https://github.com/Chih-hengChen/ai-tutor.git ~/.claude/skills/ai-tutor
-# Windows PowerShell: git clone https://github.com/Chih-hengChen/ai-tutor.git "$env:USERPROFILE\.claude\skills\ai-tutor"
+```
+
+### Windows
+
+```bash
+git clone https://github.com/Chih-hengChen/ai-tutor.git "$env:USERPROFILE\.claude\skills\ai-tutor"
 ```
 
 或手动创建目录后放入以下文件：
