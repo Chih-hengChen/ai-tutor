@@ -158,7 +158,7 @@ AI Tutor:
 首次运行时自动在 `./ai-tutor/config.yaml` 创建带注释的配置模板。可选配置项：
 
 - `strictness`（严格等级）：hard / normal（默认） / lenient
-- `visual_tool`（可视化工具）：mermaid（默认） / ascii
+- `visual_tool`（可视化工具）：mermaid（默认）/ ascii / html（生成可视化 HTML 文件到 ./ai-tutor/visuals/，通过 Live Server 浏览）
 - `tone`（语气风格）：strict / encouraging（默认）
 
 各配置项的具体影响见 SKILL.md Step 1。

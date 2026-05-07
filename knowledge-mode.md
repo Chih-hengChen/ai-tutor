@@ -110,6 +110,7 @@
 
 2. **讲解：** 精炼讲解核心原理。每次只讲 1 个最小知识点。
    - 根据知识点性质选择讲解形式（参考 `visual-aids.md`）：
+   - `visual_tool` 为 `html` 时，按 `visual-aids.md` HTML 模板生成可视化文件到 `./ai-tutor/visuals/`，终端内仍展示简短 ASCII 摘要
      - 概念性知识 → 类比 + 表格
      - 流程性知识 → Mermaid 流程图/时序图
      - 结构性知识 → ASCII 图示

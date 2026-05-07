@@ -19,7 +19,7 @@ disable-model-invocation: false
 ```yaml
 # ./ai-tutor/config.yaml
 strictness: normal         # hard | normal | lenient — hard=更少提示更严格，lenient=更多提示更宽松
-visual_tool: mermaid       # mermaid | ascii — 默认可视化工具
+visual_tool: mermaid       # mermaid | ascii | html — 默认可视化工具（html 模式生成可视化 HTML 文件到 ./ai-tutor/visuals/，通过 Live Server 浏览）
 tone: encouraging          # strict | encouraging — strict=严谨教授，encouraging=鼓励学长
 ```
 
@@ -42,6 +42,7 @@ tone 影响：
 **`/ai-tutor status` — 学习面板**
 - 读取 `./ai-tutor/records/` 下所有记录
 - 生成 ASCII 进度面板（模板见 `visual-aids.md`）
+- `visual_tool` 为 `html` 时，同时生成 HTML 进度面板到 `./ai-tutor/visuals/status.html`，并用 `start` 命令自动在浏览器打开
 - 展示后结束，不进入教学流程
 
 **`/ai-tutor reset [主题]` — 重置**
@@ -82,6 +83,7 @@ tone 影响：
    - mastery_level 3（复习过 2 次）→ 14 天后复习
 3. 如果有到期或过期的节点：
    - 展示复习提醒面板（模板见 `visual-aids.md`）
+   - `visual_tool` 为 `html` 时，同时生成 HTML 复习提醒到 `./ai-tutor/visuals/review-reminder.html`
    - **复习上限：如果到期节点超过 3 个，只挑选最早到期的 3 个进行复习，其余自动顺延至下次启动。** 不要让用户被复习题淹没。
 	   - 出 1 道快速复习题（每个参与复习的节点 1 道）
    - 复习通过 → mastery_level +1，更新 last_tested_date
@@ -118,6 +120,7 @@ tone 影响：
 - `config.yaml` — 用户配置
 - `records/[slug].md` — 进度记录
 - `summaries/[slug]_[阶段slug].md` — 归档总结
+- `visuals/` — HTML 可视化文件输出目录（`visual_tool: html` 模式时使用）
 
 slug 规则：英文/拼音小写，连字符分隔。
 

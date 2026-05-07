@@ -127,7 +127,7 @@
 
 3. **踩坑总结：** 整理踩坑记录。
 
-4. **架构图：** 用 Mermaid 或 ASCII 画出当前项目的架构/数据流（参考 `visual-aids.md`）。
+4. **架构图：** 用 Mermaid 或 ASCII 画出当前项目的架构/数据流（参考 `visual-aids.md`）。`visual_tool` 为 `html` 时，按 HTML 模板生成到 `./ai-tutor/visuals/`。
 
 5. **写入文件：** `./ai-tutor/summaries/[项目slug]_[里程碑slug].md`，包含：
    - 功能说明和架构图

@@ -149,7 +149,7 @@ nodes:
 ### 讲解时的硬性要求
 
 1. **必须引用真实源码**：标注文件路径和函数名（如 `packages/react-reconciler/src/ReactFiberBeginWork.js` 的 `beginWork()`），让用户能打开代码对照阅读
-2. **必须有可视化**：每节至少包含一个结构图（ASCII）或流程图（Mermaid），用于展示数据结构关系或调用链
+2. **必须有可视化**：每节至少包含一个结构图（ASCII）或流程图（Mermaid），用于展示数据结构关系或调用链。`visual_tool` 为 `html` 时，每节必须生成 HTML 可视化文件到 `./ai-tutor/visuals/`（参考 `visual-aids.md` HTML 模板）
 3. **必须有伪代码**：用简化的伪代码总结核心流程骨架，不要让用户对着几千行源码迷失
 4. **字段关系必须说清**：涉及链表、树、指针等数据结构时，用箭头图标注节点之间的连接关系
 

@@ -88,6 +88,14 @@ if [ "$has_bom" = false ]; then
 fi
 
 echo ""
+echo "--- 7. HTML visual templates ---"
+if grep -q "HTML 可视化模式" "$SKILL_DIR/visual-aids.md"; then
+  echo "  OK  HTML visual templates present"; ok
+else
+  fail "visual-aids.md missing HTML visual templates section"
+fi
+
+echo ""
 echo "=== Results: $PASS passed, $FAIL failed ==="
 if [ "$FAIL" -gt 0 ]; then
   exit 1

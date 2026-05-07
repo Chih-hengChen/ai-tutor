@@ -1,0 +1,4 @@
+# ./ai-tutor/config.yaml
+strictness: normal         # hard | normal | lenient — hard=更少提示更严格，lenient=更多提示更宽松
+visual_tool: html         # mermaid | ascii | html — 默认可视化工具
+tone: encouraging          # strict | encouraging — strict=严谨教授，encouraging=鼓励学长
