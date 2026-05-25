@@ -47,11 +47,12 @@ tone 影响：
 
 **`/ai-tutor reset [主题]` — 重置**
 - 删除 `./ai-tutor/records/[主题slug].md`
+- 删除 `./ai-tutor/raw-document/[主题slug]_*` 相关考核记录
 - 删除 `./ai-tutor/summaries/[主题slug]_*` 相关归档
 - 确认后输出"已清除 [主题] 的所有学习记录"
 
 **`/ai-tutor reset --all` — 全部重置**
-- 删除 records 和 summaries 下所有文件
+- 删除 records、raw-document 和 summaries 下所有文件
 - 需二次确认
 
 **退出指令 — 保存离开**
@@ -119,6 +120,7 @@ tone 影响：
 所有数据存放在 `./ai-tutor/`：
 - `config.yaml` — 用户配置
 - `records/[slug].md` — 进度记录
+- `raw-document/[slug]_[节点编号].md` — 讲解原文 + 考核记录（上半部分讲解原文，下半部分考核记录）
 - `summaries/[slug]_[阶段slug].md` — 归档总结
 - `visuals/` — HTML 可视化文件输出目录（`visual_tool: html` 模式时使用）
 
