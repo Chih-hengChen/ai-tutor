@@ -200,6 +200,9 @@ AI Tutor:
 │   ├── react-hooks.md
 │   ├── nodejs-chatroom.md
 │   └── project-auth-module.md
+├── raw-document/                # 讲解原文 + 考核记录（脚本自动提取）
+│   ├── topic1-rag-全链路架构.md
+│   └── topic2-向量库选型.md
 └── summaries/                   # 归档总结
     ├── react-hooks_hooks-basics.md
     └── nodejs-chatroom_milestone-1.md
@@ -219,6 +222,8 @@ ai-tutor/
 ├── codebase-mode.md      # 源码阅读模式工作流
 ├── deep-dive-mode.md     # 深度讲解模式工作流（源码级底层教学）
 ├── visual-aids.md        # 可视化工具箱 + 学习面板模板
+├── scripts/
+│   └── extract-topics.js # 从对话 JSONL 提取讲解原文和考核记录
 └── README.md             # 本文件
 ```
 
