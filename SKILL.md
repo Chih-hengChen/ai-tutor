@@ -120,9 +120,10 @@ tone 影响：
 所有数据存放在 `./ai-tutor/`：
 - `config.yaml` — 用户配置
 - `records/[slug].md` — 进度记录
-- `raw-document/[slug]_[节点编号].md` — 讲解原文 + 考核记录（上半部分讲解原文，下半部分考核记录）
+- `raw-document/topic{N}-{slug}.md` — 讲解原文 + 考核记录（由 `scripts/extract-topics.js` 从对话 JSONL 自动提取，LLM 不负责写入）
 - `summaries/[slug]_[阶段slug].md` — 归档总结
 - `visuals/` — HTML 可视化文件输出目录（`visual_tool: html` 模式时使用）
+- `scripts/extract-topics.js` — 从对话 JSONL 提取讲解原文和考核记录的脚本
 
 slug 规则：英文/拼音小写，连字符分隔。
 
