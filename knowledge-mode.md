@@ -108,15 +108,30 @@
 
 1. **状态检查：** 读取记录，找到第一个待处理节点，标记 `[学习中]`。
 
-2. **讲解：** 精炼讲解核心原理。每次只讲 1 个最小知识点。
-   - 根据知识点性质选择讲解形式（参考 `visual-aids.md`）：
-   - `visual_tool` 为 `html` 时，按 `visual-aids.md` HTML 模板生成可视化文件到 `./ai-tutor/visuals/`，终端内仍展示简短 ASCII 摘要
-     - 概念性知识 → 类比 + 表格
-     - 流程性知识 → Mermaid 流程图/时序图
-     - 结构性知识 → ASCII 图示
-     - 对比性知识 → 对比表格
+2. **讲解并直接写入 raw-document（不在终端输出讲解正文）：** 每次只讲 1 个最小知识点。**讲解的完整文本必须直接用 Write 工具写入 `./ai-tutor/raw-document/topic{N}-{slug}.md`，终端不打印讲解正文。** 用户读 md 文件而不是看终端。
 
-3. **（无需手动保存原文）** 讲解原文会在考核通过后由脚本自动从对话 JSONL 中提取，LLM 不需要自行写入 raw-document。
+   - 文件结构：
+     ```markdown
+     # [节点名]
+
+   ## 讲解原文
+
+   [本次讲解的完整 markdown：含类比、机制、示例、Mermaid 图、表格、代码块]
+
+   ## 考核过程
+
+   （此段在 Phase 3 通过后追加填充）
+   ```
+   - 文件不存在则新建；存在且为本节首次讲解则**整体覆盖**讲解原文段（不动 `## 考核过程` 段）。
+   - 根据知识点性质选择讲解形式（参考 `visual-aids.md`）：概念性 → 类比+表格；流程性 → Mermaid 流程/时序图；结构性 → ASCII 图示；对比性 → 对比表格。
+   - `visual_tool: html` 时，可视化 HTML 文件仍生成到 `./ai-tutor/visuals/`，并在 raw-document 讲解文中标注链接（如 `[📊 查看可视化](./visuals/topic{N}-{slug}.html)`）。
+
+3. **终端短摘要（必备）：** Write 完成后，在终端**只输出**：
+   ```
+   ✅ 已写入讲解：./ai-tutor/raw-document/topic{N}-{slug}.md
+   📌 本节要点：[标题级 1 行] + [3-5 条 ≤30 字的核心结论]
+   ```
+   不输出讲解正文。如需查看，让用户打开 md 文件。提示用户："讲解已写入文件，请在编辑器/预览中打开查看。准备好后告诉我，我会出考核题。"
 
 4. **强制考核：** 抛出一道实践题。题型按知识点性质选择：
    - 概念理解 → 情景分析题
@@ -137,7 +152,43 @@
 
 - 未通过 → 出全新同类题，绝不直接给答案。
 - 同一节点连续失败 3 次 → 拆分为更小子知识点。
-- 通过 → 更新记录 YAML frontmatter 中对应节点的 `status: mastered`、`last_tested: 今天`、`mastery_level: 1`。追加学习日志到 Markdown 正文。**同时运行脚本提取原文和考核记录：** 执行 `node [skill目录]/scripts/extract-topics.js <当前对话JSONL路径> ./ai-tutor/raw-document --topic <当前Topic编号>`。脚本会自动从对话日志中逐字提取讲解原文和考核过程（用户回答、LLM点评）到 `./ai-tutor/raw-document/` 目录，确保原文不被 LLM 改写。
+- 通过 → 执行以下三件事，**全部完成后才能进入下一节点**：
+
+  **(a) 更新记录文件**
+  YAML frontmatter 中对应节点：`status: mastered`、`last_tested: 今天`、`mastery_level: 1`。Markdown 正文追加学习日志。
+
+  **(b) 追加考核过程到 raw-document**
+  Read `./ai-tutor/raw-document/topic{N}-{slug}.md`，在文件末尾的 `## 考核过程` 段下追加（如果该段还没有内容则填充它）。追加格式：
+  ```markdown
+  ## 考核过程
+
+  ### 题目 1：[题干]
+
+  **用户回答**：
+  [用户原话摘要或要点]
+
+  **点评**：
+  [LLM 评估 + 错误类型（如有）+ 通过/未通过]
+
+  ### 补充对话（如有提示/纠正/二次出题）
+  [关键的几轮对话要点，不要逐字转录全部]
+
+  ---
+  通过时间：YYYY-MM-DD
+  ```
+  如果考核未通过但已重新出题，每轮考核各写一个 `### 题目 N` 子段。
+
+  **(c) 立即蒸馏本章节**
+  Read `distill.md` 工作流文件，按其四段入口结构生成 `./ai-tutor/distilled/topic{N}-{slug}.md`（≤400 字）。**考核中用户答错的点必须收入"最容易被追问的点"**。
+
+  **(d) 提示用户**
+  终端简短输出：
+  ```
+  ✅ [节点名] 已通过
+  📄 raw-document: ./ai-tutor/raw-document/topic{N}-{slug}.md（含讲解原文 + 本次考核过程）
+  🎯 distilled :  ./ai-tutor/distilled/topic{N}-{slug}.md（400 字复习版）
+  ```
+  然后进入下一节点，回到 Phase 2 第 1 步。
 
 ## Phase 4: 阶段总结与知识沉淀
 

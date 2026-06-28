@@ -200,7 +200,10 @@ AI Tutor:
 │   ├── react-hooks.md
 │   ├── nodejs-chatroom.md
 │   └── project-auth-module.md
-├── raw-document/                # 讲解原文 + 考核记录（脚本自动提取）
+├── raw-document/                # 讲解原文 + 考核过程（LLM 即时写入）
+│   ├── topic1-rag-全链路架构.md
+│   └── topic2-向量库选型.md
+├── distilled/                   # 蒸馏产物（400 字入口结构，每章一份）
 │   ├── topic1-rag-全链路架构.md
 │   └── topic2-向量库选型.md
 └── summaries/                   # 归档总结
@@ -209,8 +212,10 @@ AI Tutor:
 ```
 
 - 关闭会话后进度不丢失
+- 用户读 `raw-document/*.md` 看完整讲解（终端不打印讲解正文）
+- 用户读 `distilled/*.md` 做高频复习和面试默想
 - 归档总结可在任意 Markdown 阅读器查看
-- `/ai-tutor reset [主题]` 可清除对应记录
+- `/ai-tutor reset [主题]` 可清除对应记录（含 records / raw-document / distilled / summaries）
 
 ## 文件结构
 
@@ -221,9 +226,10 @@ ai-tutor/
 ├── project-mode.md       # 项目模式工作流（含环境自动检查）
 ├── codebase-mode.md      # 源码阅读模式工作流
 ├── deep-dive-mode.md     # 深度讲解模式工作流（源码级底层教学）
+├── distill.md            # 章节蒸馏工作流（考核后追加 raw-document + 生成 distilled）
 ├── visual-aids.md        # 可视化工具箱 + 学习面板模板
 ├── scripts/
-│   └── extract-topics.js # 从对话 JSONL 提取讲解原文和考核记录
+│   └── extract-topics.js # 已废弃（保留仅为向后兼容）
 └── README.md             # 本文件
 ```
 

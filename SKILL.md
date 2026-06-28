@@ -47,12 +47,13 @@ tone 影响：
 
 **`/ai-tutor reset [主题]` — 重置**
 - 删除 `./ai-tutor/records/[主题slug].md`
-- 删除 `./ai-tutor/raw-document/[主题slug]_*` 相关考核记录
+- 删除 `./ai-tutor/raw-document/[主题slug]_*` 相关讲解原文+考核记录
+- 删除 `./ai-tutor/distilled/[主题slug]_*` 相关蒸馏文件
 - 删除 `./ai-tutor/summaries/[主题slug]_*` 相关归档
 - 确认后输出"已清除 [主题] 的所有学习记录"
 
 **`/ai-tutor reset --all` — 全部重置**
-- 删除 records、raw-document 和 summaries 下所有文件
+- 删除 records、raw-document、distilled 和 summaries 下所有文件
 - 需二次确认
 
 **退出指令 — 保存离开**
@@ -112,6 +113,7 @@ tone 影响：
 - 源码阅读模式 → Read `codebase-mode.md`，按其工作流执行
 - 深度讲解模式 → Read `deep-dive-mode.md`，按其工作流执行
 - 生成可视化内容时 → Read `visual-aids.md` 获取模板和指南
+- **每章/节/主题块考核通过后** → Read `distill.md`，按其流程追加考核对话到 raw-document 并生成 400 字蒸馏文件
 
 不要凭记忆执行工作流，每次触发都必须重新读取对应文件。
 
@@ -120,12 +122,21 @@ tone 影响：
 所有数据存放在 `./ai-tutor/`：
 - `config.yaml` — 用户配置
 - `records/[slug].md` — 进度记录
-- `raw-document/topic{N}-{slug}.md` — 讲解原文 + 考核记录（由 `scripts/extract-topics.js` 从对话 JSONL 自动提取，LLM 不负责写入）
+- `raw-document/topic{N}-{slug}.md` — **讲解原文 + 考核过程**。**LLM 即时写入**：讲解阶段直接把讲解文本写入此文件（终端不打印讲解正文）；进入下一章前把考核题、用户答案、LLM 点评等对话内容追加到讲解原文之后
+- `distilled/topic{N}-{slug}.md` — **蒸馏产物**（400 字入口结构）。每章考核通过后立即按 `distill.md` 流程生成，用于高频复习和面试默想
 - `summaries/[slug]_[阶段slug].md` — 归档总结
 - `visuals/` — HTML 可视化文件输出目录（`visual_tool: html` 模式时使用）
-- `scripts/extract-topics.js` — 从对话 JSONL 提取讲解原文和考核记录的脚本
+- `scripts/extract-topics.js` — **已废弃，保留仅为向后兼容**。当前流程中讲解原文由 LLM 直接写入 raw-document，终端不打印讲解正文，对话 JSONL 中已无原文可提取，脚本不再使用。新数据不应依赖此脚本。
 
 slug 规则：英文/拼音小写，连字符分隔。
+
+### 三层产物的分工
+
+| 文件 | 内容 | 写入时机 | 用途 |
+|------|------|---------|------|
+| `raw-document/topic{N}-{slug}.md` | 完整讲解原文 + 考核过程 | LLM 讲解时即时写、考核后追加 | 深挖细节、回忆不起来时回看 |
+| `distilled/topic{N}-{slug}.md` | 400 字入口结构 | 每章考核通过后立即蒸馏 | 高频复习、强迫提取、面试默想 |
+| `summaries/[slug]_[阶段].md` | 阶段总结 | 模块/里程碑完成时 | 跨章节串联、架构梳理 |
 
 ### 记录文件格式
 
